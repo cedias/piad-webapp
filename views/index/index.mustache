@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title> Spam Review Detection </title>
+	</head>
+	<body>	
+		<div class="container">
+			{{> header}}
+		    {{> contentIndex}}
+		    {{> footer }}
+		</div>
+	</body>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/style.css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+
+	$(".score_field").map(function colorizer() {
+		var elt = $(this);
+		if(elt.html() > 0.5)
+			elt.addClass("success");
+		if(elt.html() <=0.5 && elt.html()>-0.5)
+			elt.addClass("warning");
+		if(elt.html()<-0.5)
+			elt.addClass("danger");
+	});
+
+	</script>
+</html>

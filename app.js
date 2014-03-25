@@ -2,15 +2,22 @@ var express = require('express');
 var path = require('path');
 var mysql = require('mysql');
 var app = express();
+/*
+var site = require('./controllers/site');
+var reviews = require('./controllers/reviews');
+var users = require('./controllers/users');
+var products = require('./controllers/products');
+*/
+var sql = require('./sql/queries');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'amazon',
-  password : 'amazon'
+  password : 'amazon',
+  multipleStatements: true,
 });
 
 connection.query('USE amazon');
-
 
 app.set('port', 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -20,13 +27,48 @@ app.engine('mustache', require('hogan-middleware').__express);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+/*HOME*/
 app.get('/', function(req, res){ 
 
-	connection.query('SELECT r.review_id as rid, u.username as uid, p.product_name as pname, r.honesty_score as hon FROM reviews r,users u, products p where u.user_id = r.user_id AND p.product_id = r.product_id ORDER BY honesty_score asc LIMIT 0,10 ', function(err, rows, fields) {
+	connection.query(sql.nbReviews+sql.nbUsers+sql.nbProducts+sql.indexTab1+sql.indexTab2+sql.indexTab3, function(err, rows, fields) {
 	  if (err) throw err;
-	   res.render('index',{title:"SpamReviewDetection",result:rows});
+	
+  	   var hashresults =
+  	   {
+  	   	nb_reviews:rows[0][0]["nb_reviews"],
+  	   	nb_users:rows[1][0]["nb_users"],
+  	   	nb_products:rows[2][0]["nb_products"],
+  	   	tab1:rows[3],
+  	   	tab2:rows[4],
+  	   	tab3:rows[5],
+  	   };
+  	   
+
+	   res.render('index',hashresults);
 	});
 
+});
+
+/*Reviews*/
+app.get('/reviews', function(req, res){ 
+
+	
+	   res.render('reviews',{reviews:true});
+	
+
+});
+
+/*Users*/
+app.get('/users', function(req, res){ 
+
+	   res.render('users',{users:true});
+	
+
+});
+
+/*Products*/
+app.get('/products', function(req, res){ 
+	res.render('products',{products:true});
 });
 
 

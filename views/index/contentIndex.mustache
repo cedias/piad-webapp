@@ -1,0 +1,61 @@
+<div class="row">
+<h3 class="col-md-12"> Statistics </h3>
+
+<p id="stats" class="col-md-12">
+	The database currently records <b>{{ nb_reviews }} reviews</b> on <b>{{ nb_products }} products</b>, written by <b> {{ nb_users }} users.</b>
+	<br/>
+	You might want to check out the following records, they seem odd.
+</p>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+  	<h3> Worst 10 Reviews </h3>
+		<table class="table table-hover">
+			<th>Review id</th>
+			<th>Honesty</th>
+
+			{{#tab1}}
+			  <tr>
+			  	<td>{{rid}}</td>
+			  	<td class="score_field">{{hon}}</td>
+			  </tr>
+			{{/tab1}}
+		</table>
+  </div>
+
+  <div class="col-md-4">
+  		<h3> Worst 10 Users </h3>
+		<table class="table table-hover">
+		<th>User id</th>
+		<th>Trustiness</th>
+		{{#tab2}}
+	  	<tr>
+	  		<td>{{uid}}</td>
+	  		<td class="score_field">{{tru}}</td>
+	  	</tr>
+		{{/tab2}}
+	</table>
+  </div>
+  <div class="col-md-4">
+<h3> Worst 10 Products </h3>
+<table class="table table-hover">
+	<th>Product id</th>
+	<th>Reliability</th>
+
+	{{#tab3}}
+  	<tr>
+  		<td>{{pid}}</td>
+  		<td class="score_field">{{rel}}</td>
+  	</tr>
+	{{/tab3}}
+</table>
+  </div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+
+<form class="form-inline" role="form" id="search_form"  >
+	<div class="form-group">
+	    <label class="sr-only" for="search_input">Search</label>
+	    <input type="text" class="form-control" id="search_input" placeholder="Enter Search">
+  	</div>
+
+  	<select class="form-control">
+  		<option>Review</option>
+	 	<option>Product</option>
+		<option>User</option>
+	</select>
+		<button type="submit" class="btn btn-default">Search</button>
+</form>
+
+<div class="row" id="header">
+	<h1 class="col-md-12"> <a href="/">Dashboard</a> </h1>
+</div>
+<div class="row" id="menu">
+
+		{{^reviews}}
+			<a href="/reviews"  class="col-md-4 menu_item">
+				Reviews <span class="glyphicon glyphicon-pencil"></span>
+			</a>
+		{{/reviews}}
+
+		{{#reviews}}
+			<div class="col-md-4 menu_item active">
+				Reviews <span class="glyphicon glyphicon-pencil"></span>
+			</div>
+		{{/reviews}}
+
+		{{^users}}
+	  		<a href="/users" class="col-md-4 menu_item">
+	  			Users <span class="glyphicon glyphicon-user"></span>
+	  		</a>
+  		{{/users}}
+
+  		{{#users}}
+  			<div href="/users" class="col-md-4 menu_item active">
+  				Users <span class="glyphicon glyphicon-user"></span>
+  			</div>
+  		{{/users}}
+
+  		{{^products}}
+	  		<a href="/products"  class="col-md-4 menu_item">
+				Products <span class="glyphicon glyphicon-tags"></span>
+			</a>
+		{{/products}}
+
+		{{#products}}
+			<a href="/products"  class="col-md-4 menu_item active">
+				Products <span class="glyphicon glyphicon-tags"></span>
+			</a>
+		{{/products}}
+</div>
