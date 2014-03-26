@@ -49,7 +49,8 @@ app.get('/', function(req, res){
 
 });
 
-/*Reviews*/
+/* ---------- Reviews ------------ */
+
 app.get('/reviews', function(req, res){ 
 
 	connection.query(sql.reviews, function(err, rows, fields) {
@@ -62,7 +63,13 @@ app.get('/reviews', function(req, res){
 
 });
 
-/*Users*/
+app.get('/review/:id',function(req, res){
+  var rid = req.param("id");
+
+    res.render('reviews/review',{rid:rid});
+});
+
+/*--------------- Users --------------*/
 app.get('/users', function(req, res){ 
 
   connection.query(sql.users, function(err, rows, fields) {
@@ -74,7 +81,27 @@ app.get('/users', function(req, res){
 
 });
 
-/*Products*/
+app.get('/user/:id',function(req, res){
+  var uid = req.param("id");
+
+  connection.query(sql.userInfo(uid)+sql.userReviews(uid), function(err, rows, fields) {
+    if (err) throw err;
+    console.log(rows);
+
+     var hashresults =
+       {
+        infoUser:rows[0],
+        reviewUser:rows[1]
+       };
+
+    res.render('users/user',hashresults);
+    });
+
+    
+});
+
+
+/*----------------- Products --------------*/
 app.get('/products', function(req, res){ 
 
    connection.query(sql.products, function(err, rows, fields) {
@@ -82,6 +109,12 @@ app.get('/products', function(req, res){
 
      res.render('products/products',{products:true, tab:rows});
     });
+});
+
+app.get('/product/:id',function(req, res){
+  var pid = req.param("id");
+
+    res.render('products/product',{pid:pid});
 });
 
 

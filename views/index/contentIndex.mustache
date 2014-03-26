@@ -16,10 +16,12 @@
 			<th>Honesty</th>
 
 			{{#tab1}}
-			  <tr>
+			
+			  <tr class="clickable_row" data-url="/review/{{rid}}" >
 			  	<td>{{rid}}</td>
 			  	<td class="score_field">{{hon}}</td>
 			  </tr>
+			</a>
 			{{/tab1}}
 		</table>
   </div>
@@ -30,7 +32,7 @@
 		<th>User id</th>
 		<th>Trustiness</th>
 		{{#tab2}}
-	  	<tr>
+	  	<tr class="clickable_row" data-url="/user/{{uid}}">
 	  		<td>{{uid}}</td>
 	  		<td class="score_field">{{tru}}</td>
 	  	</tr>
@@ -44,7 +46,7 @@
 	<th>Reliability</th>
 
 	{{#tab3}}
-  	<tr>
+  	<tr class="clickable_row" data-url="/product/{{pid}}">
   		<td>{{pid}}</td>
   		<td class="score_field">{{rel}}</td>
   	</tr>

@@ -15,7 +15,7 @@
 						<th> Name </th>
 						<th> Reliability </th>
 						{{#tab}}
-							<tr>
+							<tr class="clickable_row" data-url="/product/{{pid}}">
 								<td>{{pid}}</td>
 								<td>{{pname}}</td>
 								<td class="score_field">{{rel}}</td>
@@ -24,6 +24,10 @@
 					</table>
 				</div>
 			</div>
+			<ul class="pager">
+  				<li><a href="#">Previous</a></li>
+  				<li><a href="#">Next</a></li>
+			</ul>
 		{{> footer }}
 	</div>
 	</body>

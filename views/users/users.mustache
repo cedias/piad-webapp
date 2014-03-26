@@ -16,7 +16,7 @@
 						<th> Username </th>
 						<th> Trustiness </th>
 						{{#tab}}
-							<tr>
+							<tr class="clickable_row" data-url="/user/{{uid}}">
 								<td>{{uid}}</td>
 								<td>{{uname}}</td>
 								<td class="score_field">{{tru}}</td>
@@ -25,6 +25,10 @@
 					</table>
 				</div>
 			</div>
+			<ul class="pager">
+  				<li><a href="#">Previous</a></li>
+  				<li><a href="#">Next</a></li>
+			</ul>
 	    {{> footer }}
 	</div>
 	</body>
