@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title> Spam Review Detection - Users </title>
+
+		 {{> includes}}
+	</head>
+	<body>	
+	<div class="container">
+		{{> header}}
+		<div class="row">
+				<div class="col-md-12">
+				<h3> Users List </h3>
+					<table class="table table-hover">
+						<th> User id </th>
+						<th> Username </th>
+						<th> Trustiness </th>
+						{{#tab}}
+							<tr>
+								<td>{{uid}}</td>
+								<td>{{uname}}</td>
+								<td class="score_field">{{tru}}</td>
+							</tr>
+						{{/tab}}
+					</table>
+				</div>
+			</div>
+	    {{> footer }}
+	</div>
+	</body>
+</html>

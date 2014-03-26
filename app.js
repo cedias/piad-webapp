@@ -52,8 +52,12 @@ app.get('/', function(req, res){
 /*Reviews*/
 app.get('/reviews', function(req, res){ 
 
-	
-	   res.render('reviews',{reviews:true});
+	connection.query(sql.reviews, function(err, rows, fields) {
+    if (err) throw err;
+
+	   res.render('reviews/reviews',{reviews:true, tab:rows});
+
+   });
 	
 
 });
@@ -61,14 +65,23 @@ app.get('/reviews', function(req, res){
 /*Users*/
 app.get('/users', function(req, res){ 
 
-	   res.render('users',{users:true});
+  connection.query(sql.users, function(err, rows, fields) {
+    if (err) throw err;
+
+	   res.render('users/users',{users:true, tab:rows});
+    });
 	
 
 });
 
 /*Products*/
 app.get('/products', function(req, res){ 
-	res.render('products',{products:true});
+
+   connection.query(sql.products, function(err, rows, fields) {
+    if (err) throw err;
+
+     res.render('products/products',{products:true, tab:rows});
+    });
 });
 
 
