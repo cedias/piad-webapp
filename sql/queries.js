@@ -52,12 +52,13 @@ exports.indexTab1 =
   +'LIMIT 0,30;';
 
 /*user info*/
-    exports.userInfo = function(uid){
+  exports.userInfo = function(uid){
         return query =
        'SELECT u.user_id as uid, u.username as uname, u.trust_score as tru '
       +'FROM users u '
       +'WHERE u.user_id =\''+uid+'\' ;'
     };
+
   exports.userReviews = function(uid){
   return query =
        'SELECT r.honesty_score as hon, r.score as score, r.review_id as rid,DATE_FORMAT(r.time, "%d-%m-%Y") as date, r.summary as summary,r.helpfullness as help, r.nb_helpfullness as nbhelp, p.product_id as pid, p.reliability_score as rel '
@@ -65,4 +66,21 @@ exports.indexTab1 =
       +'WHERE r.user_id LIKE\''+uid+'\' '
       +'AND r.product_id = p.product_id '
       +'ORDER BY r.honesty_score ASC;'
+    };
+
+/*products info*/
+exports.productInfo = function(pid){
+        return query =
+       'SELECT p.product_id as pid, p.product_name as pname, p.reliability_score as rel '
+      +'FROM products p '
+      +'WHERE  p.product_id =\''+pid+'\' ;'
+    };
+
+
+/*review info*/
+exports.reviewInfo = function(rid){
+        return query =
+       'SELECT r.review_id as rid, r.summary as summary, r.honesty_score as hon, r.text as text '
+      +'FROM reviews r '
+      +'WHERE r.review_id =\''+uid+'\' ;'
     };

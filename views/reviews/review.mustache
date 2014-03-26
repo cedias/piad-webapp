@@ -12,7 +12,39 @@
 			{{> header}}
 			<div class="row">
 				<div class="col-md-12">
-				<h3> Review id n°{{rid}} </h3>
+			
+			<h2 class="page-header"> <span class="glyphicon glyphicon-pencil"></span> Summary <small>#{{ rid }}</small></h2>
+			
+			Agreement Score: <span class="label label-danger"> {{tru}} </span>
+			Honesty Score: <span class="label label-danger"> {{tru}} </span>
+			Number of Duplicates
+
+			
+
+			<h3> 2 Duplicates</h3>
+			
+			<table class="table table-hover">
+						<th> Review id </th>
+						<th> Product id </th>
+						<th> User id </th>
+						<th> Date </th>
+						<th> Helpfullness </th>
+						<th> Summary </th>
+						<th> Score </th>
+						<th> Honesty </th>
+
+						{{#reviewDuplicates}}
+							<tr>
+								<td>{{rid}}</td>
+								<td>{{pid}}</td>
+								<td>{{date}}</td>
+								<td>{{help}}/{{nbhelp}}</td>
+								<td>{{summary}}</td>
+								<td>{{score}}</td>
+								<td class="score_field">{{hon}}</td>
+							</tr>
+						{{/reviewDuplicates}}
+			</table>
 				
 				
 					

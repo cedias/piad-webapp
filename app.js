@@ -114,7 +114,11 @@ app.get('/products', function(req, res){
 app.get('/product/:id',function(req, res){
   var pid = req.param("id");
 
-    res.render('products/product',{pid:pid});
+  connection.query(sql.productInfo(pid), function(err, rows, fields) {
+
+    res.render('products/product',{data:rows});
+  });
+  
 });
 
 
