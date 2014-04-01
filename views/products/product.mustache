@@ -9,20 +9,44 @@
 	<body>
 
 	<div class="container">
-			{{> header}}
-			<div class="row">
-				<div class="col-md-12">
-				{{#data}}
-				<h2 class="page-header"> <span class="glyphicon glyphicon-tags"></span> {{ pname }} <small>#{{ pid }}</small></h2>
-				{{/data}}
+		{{> header}}
+
+			{{#data}}
+				<h2 class="page-header">
+				 <span class="glyphicon glyphicon-tags"></span> {{ pname }} <small>#{{ pid }}</small>
+				</h2>
+
+				<ul>
+					<li>Reliability Score: <span class="label label-danger"> {{rel}} </span></li>
+					<li>Average score: {{avg_score}}
+					<li>Number of duplicates reviews: {{nb_dupes}}</li>
+					<li>Number of bursts: {{nb_bursts}}</li>
+				</ul>
+
+			{{/data}}
 				
 					
-		
-				</div>
-			</div>
-		    {{> footer }}
-	</div>
-  
+			<h3>Reviews</h3>
+			
+			<table class="table table-hover">
+				<th> Review id </th>
+				<th> Date </th>
+				<th> Score </th>
+				<th> Honesty </th>
 
+				{{#review_tab}}
+					<tr>
+						<td>{{rid}}</td>
+						<td>{{uid}}</td>
+						<td>{{date}}</td>
+						<td>{{score}}</td>
+						<td class="score_field">{{hon}}</td>
+					</tr>
+				{{/review_tab}}
+
+			</table>
+			
+		    {{> footer }}
+		</div>
 	</body>
 </html>

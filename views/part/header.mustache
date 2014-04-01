@@ -18,39 +18,39 @@
 </div>
 <div class="row" id="menu">
 
-		{{^reviews}}
+		{{^review_cat}}
 			<a href="/reviews"  class="col-md-4 menu_item">
 				Reviews <span class="glyphicon glyphicon-pencil"></span>
 			</a>
-		{{/reviews}}
+		{{/review_cat}}
 
-		{{#reviews}}
+		{{#review_cat}}
 			<div class="col-md-4 menu_item active">
 				Reviews <span class="glyphicon glyphicon-pencil"></span>
 			</div>
-		{{/reviews}}
+		{{/review_cat}}
 
-		{{^users}}
+		{{^user_cat}}
 	  		<a href="/users" class="col-md-4 menu_item">
 	  			Users <span class="glyphicon glyphicon-user"></span>
 	  		</a>
-  		{{/users}}
+  		{{/user_cat}}
 
-  		{{#users}}
+  		{{#user_cat}}
   			<div href="/users" class="col-md-4 menu_item active">
   				Users <span class="glyphicon glyphicon-user"></span>
   			</div>
-  		{{/users}}
+  		{{/user_cat}}
 
-  		{{^products}}
+  		{{^product_cat}}
 	  		<a href="/products"  class="col-md-4 menu_item">
 				Products <span class="glyphicon glyphicon-tags"></span>
 			</a>
-		{{/products}}
+		{{/product_cat}}
 
-		{{#products}}
+		{{#product_cat}}
 			<a href="/products"  class="col-md-4 menu_item active">
 				Products <span class="glyphicon glyphicon-tags"></span>
 			</a>
-		{{/products}}
+		{{/product_cat}}
 </div>

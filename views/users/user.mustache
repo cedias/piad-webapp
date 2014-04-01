@@ -8,50 +8,47 @@
 	</head>
 	<body>
 
-	<div class="container">
+		<div class="container">
 			{{> header}}
 
 			{{#infoUser}}
-			<h2 class="page-header"> <span class="glyphicon glyphicon-user"></span> {{ uname }} <small>#{{ uid }}</small></h2>
-			
-			Trustiness Score: <span class="label label-danger"> {{tru}} </span>
-			Number of Reviews: 2
-			Number of Duplicates: 2
-			Times in a burst: 4
+				<h2 class="page-header">
+				 <span class="glyphicon glyphicon-user"></span> {{ uname }} <small>#{{ uid }}</small>
+				</h2>
+				
+				<ul>
+					<li>Trustiness Score: <span class="label label-danger"> {{tru}} </span>
+					<li>Number of Reviews: {{ nb_reviews }}</li>
+					<li>Number of Duplicates: {{ nb_dupes }}</li>
+					<li>Times in a burst: {{ nb_bursts }}</li>
+				</ul>
 
 			{{/infoUser}}
-			<h3> 2 Reviews </h3>
 			
-			<table class="table table-hover">
-						<th> Review id </th>
-						<th> Product id </th>
-						<th> Date </th>
-						<th> Helpfullness </th>
-						<th> Summary </th>
-						<th> Score </th>
-						<th> Honesty </th>
-
-						{{#reviewUser}}
-							<tr>
-								<td>{{rid}}</td>
-								<td>{{pid}}</td>
-								<td>{{date}}</td>
-								<td>{{help}}/{{nbhelp}}</td>
-								<td>{{summary}}</td>
-								<td>{{score}}</td>
-								<td class="score_field">{{hon}}</td>
-							</tr>
-						{{/reviewUser}}
-			</table>
-
-				 
-  
+				<h3> {{ nb_reviews }} Reviews </h3>
 				
-		
-			
-		    {{> footer }}
-	</div>
-  
+				<table class="table table-hover">
+					<th> Review id </th>
+					<th> Product id </th>
+					<th> Date </th>
+					<th> Helpfullness </th>
+					<th> Summary </th>
+					<th> Score </th>
+					<th> Honesty </th>
 
+					{{#reviewUser}}
+						<tr>
+							<td>{{rid}}</td>
+							<td>{{pid}}</td>
+							<td>{{date}}</td>
+							<td>{{help}}/{{nbhelp}}</td>
+							<td>{{summary}}</td>
+							<td>{{score}}</td>
+							<td class="score_field">{{hon}}</td>
+						</tr>
+					{{/reviewUser}}
+				</table>
+			{{> footer }}
+		</div>
 	</body>
 </html>

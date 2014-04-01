@@ -27,7 +27,10 @@ app.engine('mustache', require('hogan-middleware').__express);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 /*HOME*/
+
 app.get('/', function(req, res){ 
 
 	connection.query(sql.nbReviews+sql.nbUsers+sql.nbProducts+sql.indexTab1+sql.indexTab2+sql.indexTab3, function(err, rows, fields) {
@@ -56,7 +59,7 @@ app.get('/reviews', function(req, res){
 	connection.query(sql.reviews, function(err, rows, fields) {
     if (err) throw err;
 
-	   res.render('reviews/reviews',{reviews:true, tab:rows});
+	   res.render('reviews/reviews',{review_cat:true, tab:rows});
 
    });
 	
@@ -66,7 +69,11 @@ app.get('/reviews', function(req, res){
 app.get('/review/:id',function(req, res){
   var rid = req.param("id");
 
-    res.render('reviews/review',{rid:rid});
+  connection.query(sql.reviewInfo(rid), function(err, rows, fields) {
+    if (err) throw err;
+
+    res.render('reviews/review',{reviewInfo:rows});
+  }); 
 });
 
 /*--------------- Users --------------*/
@@ -75,7 +82,7 @@ app.get('/users', function(req, res){
   connection.query(sql.users, function(err, rows, fields) {
     if (err) throw err;
 
-	   res.render('users/users',{users:true, tab:rows});
+	   res.render('users/users',{user_cat:true, tab:rows});
     });
 	
 
@@ -86,18 +93,17 @@ app.get('/user/:id',function(req, res){
 
   connection.query(sql.userInfo(uid)+sql.userReviews(uid), function(err, rows, fields) {
     if (err) throw err;
-    console.log(rows);
+    
 
      var hashresults =
        {
         infoUser:rows[0],
+        nb_reviews:rows[1].length,
         reviewUser:rows[1]
        };
 
     res.render('users/user',hashresults);
     });
-
-    
 });
 
 
@@ -107,21 +113,19 @@ app.get('/products', function(req, res){
    connection.query(sql.products, function(err, rows, fields) {
     if (err) throw err;
 
-     res.render('products/products',{products:true, tab:rows});
+     res.render('products/products',{product_cat:true, tab:rows});
     });
 });
 
 app.get('/product/:id',function(req, res){
   var pid = req.param("id");
 
-  connection.query(sql.productInfo(pid), function(err, rows, fields) {
+  connection.query(sql.productInfo(pid)+sql.productReviews(pid), function(err, rows, fields) {
 
-    res.render('products/product',{data:rows});
+    res.render('products/product',{data:rows[0],review_tab:rows[1]});
   });
   
 });
-
-
 
 
 app.listen(app.get('port'));
