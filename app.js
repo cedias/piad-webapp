@@ -4,11 +4,15 @@ var mysql = require('mysql');
 var app = express();
 /*
 var site = require('./controllers/site');
-var reviews = require('./controllers/reviews');
 var users = require('./controllers/users');
 var products = require('./controllers/products');
 */
+
+var reviews = require('./controllers/reviews');
 var sql = require('./sql/queries');
+var sqlUsers = require('./sql/sqlUsers');
+var sqlReviews = require('./sql/sqlReviews');
+var sqlProducts = require('./sql/sqlProducts');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -32,8 +36,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 /*HOME*/
 
 app.get('/', function(req, res){ 
-
-	connection.query(sql.nbReviews+sql.nbUsers+sql.nbProducts+sql.indexTab1+sql.indexTab2+sql.indexTab3, function(err, rows, fields) {
+  var sqlString = sqlReviews.nbReviews()+sqlUsers.nbUsers()+sqlProducts.nbProducts();
+  sqlString += sqlReviews.listReviews(0,10,"hon","ASC");
+  sqlString += sqlUsers.listUsers(0,10,"tru","ASC");
+  sqlString += sqlProducts.listProducts(0,10,"rel","ASC");
+ 
+	connection.query(sqlString, function(err, rows, fields) {
 	  if (err) throw err;
 	
   	   var hashresults =
@@ -54,22 +62,33 @@ app.get('/', function(req, res){
 
 /* ---------- Reviews ------------ */
 
-app.get('/reviews', function(req, res){ 
+app.get('/reviews', function(req,res){
 
-	connection.query(sql.reviews, function(err, rows, fields) {
+  connection.query(sqlReviews.listReviews(0,50,"rid","asc"), function(err, rows, fields) {
     if (err) throw err;
-
-	   res.render('reviews/reviews',{review_cat:true, tab:rows});
+     res.render('reviews/reviews',{review_cat:true, tab:rows});
 
    });
-	
 
+});
+
+app.get('/reviews/:page', function(req, res){ 
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+  connection.query(sqlReviews.listReviews(page,50,sort,order), function(err, rows, fields) {
+    if (err) throw err;
+
+     res.send({tab:rows});
+
+   });
 });
 
 app.get('/review/:id',function(req, res){
   var rid = req.param("id");
 
-  connection.query(sql.reviewInfo(rid), function(err, rows, fields) {
+  connection.query(sqlReviews.getReview(rid), function(err, rows, fields) {
     if (err) throw err;
 
     res.render('reviews/review',{reviewInfo:rows});
@@ -79,7 +98,7 @@ app.get('/review/:id',function(req, res){
 /*--------------- Users --------------*/
 app.get('/users', function(req, res){ 
 
-  connection.query(sql.users, function(err, rows, fields) {
+  connection.query(sqlUsers.listUsers(0,50,"uid","ASC"), function(err, rows, fields) {
     if (err) throw err;
 
 	   res.render('users/users',{user_cat:true, tab:rows});
@@ -91,15 +110,13 @@ app.get('/users', function(req, res){
 app.get('/user/:id',function(req, res){
   var uid = req.param("id");
 
-  connection.query(sql.userInfo(uid)+sql.userReviews(uid), function(err, rows, fields) {
+  connection.query(sqlUsers.getUser(uid), function(err, rows, fields) {
     if (err) throw err;
     
 
      var hashresults =
        {
-        infoUser:rows[0],
-        nb_reviews:rows[1].length,
-        reviewUser:rows[1]
+        infoUser:rows
        };
 
     res.render('users/user',hashresults);
@@ -110,7 +127,7 @@ app.get('/user/:id',function(req, res){
 /*----------------- Products --------------*/
 app.get('/products', function(req, res){ 
 
-   connection.query(sql.products, function(err, rows, fields) {
+   connection.query(sqlProducts.listProducts(0,50,"pid","ASC"), function(err, rows, fields) {
     if (err) throw err;
 
      res.render('products/products',{product_cat:true, tab:rows});
@@ -120,9 +137,9 @@ app.get('/products', function(req, res){
 app.get('/product/:id',function(req, res){
   var pid = req.param("id");
 
-  connection.query(sql.productInfo(pid)+sql.productReviews(pid), function(err, rows, fields) {
-
-    res.render('products/product',{data:rows[0],review_tab:rows[1]});
+  connection.query(sqlProducts.getProduct(pid), function(err, rows, fields) {
+    console.log(rows)
+    res.render('products/product',{data:rows});
   });
   
 });
