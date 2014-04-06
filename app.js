@@ -31,9 +31,9 @@ app.engine('mustache', require('hogan-middleware').__express);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+/*******************************- PAGE ROUTES -***************************************/
 
-
-/*HOME*/
+/*-----------INDEX -----------*/
 
 app.get('/', function(req, res){ 
   var sqlString = sqlReviews.nbReviews()+sqlUsers.nbUsers()+sqlProducts.nbProducts();
@@ -62,6 +62,7 @@ app.get('/', function(req, res){
 
 /* ---------- Reviews ------------ */
 
+/*---- Get review list page -------*/
 app.get('/reviews', function(req,res){
 
   connection.query(sqlReviews.listReviews(0,50,"rid","asc"), function(err, rows, fields) {
@@ -72,19 +73,7 @@ app.get('/reviews', function(req,res){
 
 });
 
-app.get('/reviews/:page', function(req, res){ 
-  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
-  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
-  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
-
-  connection.query(sqlReviews.listReviews(page,50,sort,order), function(err, rows, fields) {
-    if (err) throw err;
-
-     res.send({tab:rows});
-
-   });
-});
-
+/*get review :id page*/
 app.get('/review/:id',function(req, res){
   var rid = req.param("id");
 
@@ -96,6 +85,8 @@ app.get('/review/:id',function(req, res){
 });
 
 /*--------------- Users --------------*/
+
+/*Get 1st page*/
 app.get('/users', function(req, res){ 
 
   connection.query(sqlUsers.listUsers(0,50,"uid","ASC"), function(err, rows, fields) {
@@ -107,6 +98,7 @@ app.get('/users', function(req, res){
 
 });
 
+/*Get user page*/
 app.get('/user/:id',function(req, res){
   var uid = req.param("id");
 
@@ -125,6 +117,8 @@ app.get('/user/:id',function(req, res){
 
 
 /*----------------- Products --------------*/
+
+/*get products list*/
 app.get('/products', function(req, res){ 
 
    connection.query(sqlProducts.listProducts(0,50,"pid","ASC"), function(err, rows, fields) {
@@ -134,15 +128,85 @@ app.get('/products', function(req, res){
     });
 });
 
+/*get product page*/
 app.get('/product/:id',function(req, res){
   var pid = req.param("id");
 
   connection.query(sqlProducts.getProduct(pid), function(err, rows, fields) {
-    console.log(rows)
     res.render('products/product',{data:rows});
   });
   
 });
+
+
+
+/************************- AJAX CALLS -****************************************/
+
+
+
+//----- REVIEWS 
+
+/*Ajax reviews loader*/
+app.get('/reviews/:page', function(req, res){ 
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+  connection.query(sqlReviews.listReviews(page,50,sort,order), function(err, rows, fields) {
+    if (err) throw err;
+
+     res.send({tab:rows});
+
+   });
+});
+
+
+app.get('/review/:id/duplicates', function(req, res){
+  var rid = req.param("id");
+  res.send("dupes of review #"+rid );
+  //TODO
+}); 
+
+//----- USERS
+/*Ajax users loader*/
+app.get('/users/:page', function(req, res){ 
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "uid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+  connection.query(sqlUsers.listUsers(page,50,sort,order), function(err, rows, fields) {
+    if (err) throw err;
+
+     res.send({tab:rows});
+
+   });
+});
+
+app.get('user/:id/reviews',function(req,res){
+
+});
+
+
+//----- PRODUCTS
+
+/*Ajax products loader*/
+app.get('/products/:page', function(req, res){ 
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "pid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+  connection.query(sqlProducts.listProducts(page,50,sort,order), function(err, rows, fields) {
+    if (err) throw err;
+
+     res.send({tab:rows});
+
+   });
+});
+
+app.get('product/:id/reviews',function(req,res){
+ //TODO
+});
+
 
 
 app.listen(app.get('port'));

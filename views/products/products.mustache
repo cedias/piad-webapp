@@ -11,9 +11,10 @@
 				<div class="col-md-12">
 				<h3> Products List </h3>
 					<table class="table table-hover">
-						<th> Product Id </th>
-						<th> Name </th>
-						<th> Reliability </th>
+						<th id="sort_pid" class="sortable" > Product Id </th>
+						<th id="sort_pname" class="sortable" > Name </th>
+						<th id="sort_rel" class="sortable" > Reliability </th>
+						<tbody id="products_list">
 						{{#tab}}
 							<tr class="clickable_row" data-url="/product/{{pid}}">
 								<td>{{pid}}</td>
@@ -21,21 +22,27 @@
 								<td class="score_field">{{rel}}</td>
 							</tr>
 						{{/tab}}
+						</tbody>
 					</table>
 				</div>
 			</div>
 			<ul class="pager">
-  				<li><a href="#">Previous</a></li>
-  				<li><a href="#">Next</a></li>
+  				<li><a id="show_more" class="clickable_gen">More</a></li>
 			</ul>
 		{{> footer }}
 	</div>
 	</body>
 
-
-
-	 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-	 <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-	 <script type="text/javascript" src="/js/jquery.min.js"></script>
-	 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+	{{=<% %>=}}
+		<script id="row-template" type="text/x-handlebars-template">
+		{{#tab}}
+		<tr class="clickable_row" data-url="/product/{{pid}}">
+			<td>{{pid}}</td>
+			<td>{{pname}}</td>
+			<td class="score_field">{{rel}}</td>
+		</tr>
+		{{/tab}}
+		</script>
+	<%={{}}=%>
+	<script type="text/javascript" src="/js/products.js"> </script>
 </html>

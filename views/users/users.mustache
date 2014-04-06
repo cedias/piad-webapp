@@ -12,9 +12,10 @@
 				<div class="col-md-12">
 				<h3> Users List </h3>
 					<table class="table table-hover">
-						<th> User id </th>
-						<th> Username </th>
-						<th> Trustiness </th>
+						<th id="sort_uid" class="sortable"> User id </th>
+						<th id="sort_uname" class="sortable"> Username </th>
+						<th id="sort_tru" class="sortable"> Trustiness </th>
+						<tbody id="users_list">
 						{{#tab}}
 							<tr class="clickable_row" data-url="/user/{{uid}}">
 								<td>{{uid}}</td>
@@ -22,14 +23,26 @@
 								<td class="score_field">{{tru}}</td>
 							</tr>
 						{{/tab}}
+						</tbody>
 					</table>
 				</div>
 			</div>
 			<ul class="pager">
-  				<li><a href="#">Previous</a></li>
-  				<li><a href="#">Next</a></li>
+  				<li><a id="show_more" class="clickable_gen">more</a></li>
 			</ul>
 	    {{> footer }}
 	</div>
+	{{=<% %>=}}
+			<script id="row-template" type="text/x-handlebars-template">
+			{{#tab}}
+			<tr class="clickable_row" data-url="/user/{{uid}}">
+				<td>{{uid}}</td>
+				<td>{{uname}}</td>
+				<td class="score_field">{{tru}}</td>
+			</tr>
+			{{/tab}}
+		</script>
+	<%={{}}=%>
+	<script type="text/javascript" src="/js/users.js"> </script>
 	</body>
 </html>

@@ -49,13 +49,14 @@ function listReviews(offset,limit,orderby,ordering,type,id){
 
 /**
 * Returns a review's complete information
-* [{rid, uid, pid, date, help, nbhelp,score,uname,pname,summary, hon, text}]
+* [{rid, uid, pid, date, help, nbhelp,score,uname,pname,summary, hon,tru,rel text}]
 */
 function getReview(id){
 	return 'SELECT r.review_id as rid, r.user_id as uid, r.product_id as pid, '
 		+'DATE_FORMAT(r.time, "%d-%m-%Y") as date,r.helpfullness as help, r.nb_helpfullness as nbhelp, '
 		+'r.score as score, u.username as uname, p.product_name as pname, r.summary as summary, '
-		+'ROUND((r.honesty_score+1)*50) as hon, r.text as text '
+		+'ROUND((r.honesty_score+1)*50) as hon,ROUND((u.trust_score+1)*50) as tru, ROUND((p.reliability_score+1)*50) as rel,'
+		+'r.text as text '
 	+'FROM reviews r, products p, users u '
 	+'WHERE r.review_id =\''+id+'\' '
 	+'AND r.user_id = u.user_id '
