@@ -2,94 +2,120 @@
 <html lang="en">
 	<head>
 		<title> Spam Review Detection </title>
-
 		 {{> includes}}
-
 	</head>
 	<body>
 		<div class="container">
+
 			{{> header}}
 
-				{{#reviewInfo}}
-					<h2 class="page-header">
+			{{#reviewInfo}}
+			<span id="rid_save" style="display:none">{{rid}}</span>
+				<div class="row">
+					<h2 class="page-header col-md-12">
 						 <span class="glyphicon glyphicon-pencil"></span>
-						 {{score}}/5 - {{summary}} <small>#{{ rid }}</small>
+						 Review
+						 #{{ rid }}
+						 
+						 	<small>
+						 	/
+							<span class="glyphicon glyphicon-user"></span>
+							<a href="/user/{{uid}}">&nbsp#{{ uid }}</a>
+						
+							/
+							
+							<span class="glyphicon glyphicon-tags"></span>
+							<a href="/product/{{pid}}">&nbsp#{{ pid }}</a>
+						</small>
+						
 					</h2>
-				
-					<ul>
-						<li>Honesty Score: <span class="label label-danger"> {{hon}} </span></li>
-						<li>Agreement Score: <span class="label label-danger"> {{agr}} </span></li>
-						<li>Considered helpfull by {{help}} on {{nbhelp}}</li>
-						<li>Number of Exact Duplicates: {{nb_exact_dupes}}</li>
-						<li>Number of (suspected) Near Duplicates: {{nb_near_dupes}}</li>
-					</ul>
-				{{/reviewInfo}}
+				</div>
 
+				<div class="row">
+					<div class="col-md-4">
+						
+						<h3>Review's Honesty</h3>
+						<div class="big_score alert">
+							{{hon}}
+						</div>
+					</div>
+
+				<div class="col-md-8"> 
+					<blockquote >
+
+							<h3><span id="review_score">{{score}}</span> - {{summary}}</h3>
+			  				<p class="text-justify">{{text}}</p>
+			  				<footer>
+			  					{{uname}} about <cite title="Source Title"> {{pname}}</cite>
+			  					<br/>Considered helpfull by {{help}} on {{nbhelp}}
+			  				</footer>
+					</blockquote>	
+					
+				</div>
+			</div>
+			{{/reviewInfo}}
+
+			<div id="exact_dupes_table" >
+			<h3>
+				Exact Duplicates
+			</h3>
+
+			<table class="table table-hover">
+				
+			
+				<th data-sort="sort_rid" class="sortable_exact"> Review id </th>
+				<th data-sort="sort_pid" class="sortable_exact"> Product id </th>
+				<th data-sort="sort_uid" class="sortable_exact"> User id </th>
+				<th data-sort="sort_date" class="sortable_exact"> Date </th>
+				<th data-sort="sort_help" class="sortable_exact"> Helpfullness </th>
+				<th data-sort="sort_summary" class="sortable_exact"> Summary </th>
+				<th data-sort="sort_score" class="sortable_exact"> Score </th>
+				<th data-sort="sort_hon" class="sortable_exact"> Honesty </th>
+				<tbody id="reviews_exact_list">
+				</tbody>
+			</table>
+			</div>
+
+			<div  id="near_dupes_table" >
 				<h3>
-					{{ nb_exact_dupes }} Exact Duplicates
+					Suspected Near Duplicates
 				</h3>
-				
-				<table class="table table-hover">
-					<th> Review id </th>
-					<th> Product id </th>
-					<th> User id </th>
-					<th> Date </th>
-					<th> Helpfullness </th>
-					<th> Summary </th>
-					<th> Score </th>
-					<th> Honesty </th>
 
-					{{#reviewExactDuplicates}}
-						<tr>
+				<table class="table table-hover">
+
+					<th data-sort="sort_rid" class="sortable_near"> Review id </th>
+					<th data-sort="sort_pid" class="sortable_near"> Product id </th>
+					<th data-sort="sort_uid" class="sortable_near"> User id </th>
+					<th data-sort="sort_date" class="sortable_near"> Date </th>
+					<th data-sort="sort_help" class="sortable_near"> Helpfullness </th>
+					<th data-sort="sort_summary" class="sortable_near"> Summary </th>
+					<th data-sort="sort_score" class="sortable_near"> Score </th>
+					<th data-sort="sort_hon" class="sortable_near"> Honesty </th>
+					<tbody id="reviews_near_list">
+					</tbody>
+				</table>
+			</div>
+
+
+			{{=<% %>=}}
+			  	<script id="row-template" type="text/x-handlebars-template">
+				  	{{#tab}}
+				  		<tr class="clickable_row" data-url="/review/{{rid}}">
 							<td>{{rid}}</td>
+							<td>{{uid}}</td>
 							<td>{{pid}}</td>
 							<td>{{date}}</td>
 							<td>{{help}}/{{nbhelp}}</td>
-							<td>{{summary}}</td>
+							<td class="truncatable">{{summary}}</td>
 							<td>{{score}}</td>
 							<td class="score_field">{{hon}}</td>
 						</tr>
-					{{/reviewExactDuplicates}}
-				</table>
-
-				<h3>
-					{{ nb_near_dupes }} Suspected Near Duplicates
-				</h3>
-				
-				<table class="table table-hover">
-					<th> Review id </th>
-					<th> Product id </th>
-					<th> User id </th>
-					<th> Date </th>
-					<th> Helpfullness </th>
-					<th> Summary </th>
-					<th> Score </th>
-					<th> Honesty </th>
-
-					{{#reviewNearDuplicates}}
-						<tr>
-							<td>{{rid}}</td>
-							<td>{{pid}}</td>
-							<td>{{date}}</td>
-							<td>{{help}}/{{nbhelp}}</td>
-							<td>{{summary}}</td>
-							<td>{{score}}</td>
-							<td class="score_field">{{hon}}</td>
-						</tr>
-					{{/reviewNearDuplicates}}
-				</table>
-				
-				<h3>Review Text</h3>
-
-				{{#reviewInfo}}
-				<blockquote >
-		  				<p class="text-justify">{{text}}</p>
-		  				<footer>
-		  					{{uname}} about <cite title="Source Title"> {{pname}}</cite>
-		  				</footer>
-				</blockquote>	
-				{{/reviewInfo}}
+					{{/tab}}
+				</script>
+			<%={{ }}=%>
+					
+			<script type="text/javascript" src="/js/review.js"> </script>
 			{{> footer }}
-		</div>
+		</div>		
 	</body>
 </html>

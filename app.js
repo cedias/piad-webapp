@@ -79,8 +79,12 @@ app.get('/review/:id',function(req, res){
 
   connection.query(sqlReviews.getReview(rid), function(err, rows, fields) {
     if (err) throw err;
+    
 
-    res.render('reviews/review',{reviewInfo:rows});
+    if(rows[0].nearDupe === null && rows[0].exactDupe === null)
+      res.render('reviews/review',{reviewInfo:rows});
+    else
+      res.render('reviews/duplicateReview',{reviewInfo:rows});
   }); 
 });
 
@@ -160,11 +164,30 @@ app.get('/reviews/:page', function(req, res){
    });
 });
 
-
-app.get('/review/:id/duplicates', function(req, res){
+/*review exact_duplicates*/
+app.get('/review/:id/exactdupes', function(req, res){
   var rid = req.param("id");
-  res.send("dupes of review #"+rid );
-  //TODO
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+  connection.query(sqlReviews.listExactDuplicates(rid,0,30,sort,order), function(err, rows, fields) {
+    if (err) throw err;
+     res.send({tab:rows});
+   });
+
+}); 
+
+/*review near_duplicates*/
+app.get('/review/:id/neardupes', function(req, res){
+  var rid = req.param("id");
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+   connection.query(sqlReviews.listNearDuplicates(rid,0,30,sort,order), function(err, rows, fields) {
+    if (err) throw err;
+     res.send({tab:rows});
+   });
+
 }); 
 
 //----- USERS
@@ -191,7 +214,7 @@ app.get('user/:id/reviews',function(req,res){
 
 /*Ajax products loader*/
 app.get('/products/:page', function(req, res){ 
-  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 0;
   var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "pid";
   var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
 
@@ -199,12 +222,21 @@ app.get('/products/:page', function(req, res){
     if (err) throw err;
 
      res.send({tab:rows});
-
-   });
+  });
 });
 
-app.get('product/:id/reviews',function(req,res){
- //TODO
+app.get('/product/:id/reviews',function(req,res){
+  var page = typeof req.query.page !== 'undefined' ?(req.query.page-1)*10 : 0;
+  console.log(page);
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+  console.log(sqlReviews.listReviews(page,10,sort,order,"product",req.param("id")));
+  connection.query(sqlReviews.listReviews(page,10,sort,order,"product",req.param("id")), function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+
+   });
+
 });
 
 

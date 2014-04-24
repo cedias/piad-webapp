@@ -12,41 +12,73 @@
 		{{> header}}
 
 			{{#data}}
+			<span id="pid_save" style="display:none">{{ pid }}</span>
 				<h2 class="page-header">
-				 <span class="glyphicon glyphicon-tags"></span> {{ pname }} <small>#{{ pid }}</small>
+					<span class="glyphicon glyphicon-tags"></span> 
+					&nbsp{{ pname }} 
+					<small>#{{ pid }}</small>
 				</h2>
 
-				<ul>
-					<li>Reliability Score: <span class="label label-danger"> {{rel}} </span></li>
-					<li>Average score: {{avg_score}}
-					<li>Number of duplicates reviews: {{nb_dupes}}</li>
-					<li>Number of bursts: {{nb_bursts}}</li>
-				</ul>
+				<div class="row">
+					<div class="col-md-4">
+						
+						<h3>Product Reliability</h3>
+						<div class="big_score alert">
+							{{rel}}
+						</div>
+					</div>
 
-			{{/data}}
-				
-					
-			<h3>Reviews</h3>
+					<div class="col-md-8"> 
+						<h3>Product Reviews</h3>
 			
-			<table class="table table-hover">
-				<th> Review id </th>
-				<th> Date </th>
-				<th> Score </th>
-				<th> Honesty </th>
+						<table class="table table-hover">
+						
+							<th id="sort_rid" class="sortable" > Review id </th>
+							<th id="sort_uid" class="sortable"> User id </th>
+							<th id="sort_time" class="sortable"> Date </th>
+							<th id="sort_score" class="sortable"> Score </th>
+							<th id="sort_hon" class="sortable" > Honesty </th>
 
-				{{#review_tab}}
-					<tr>
-						<td>{{rid}}</td>
-						<td>{{uid}}</td>
-						<td>{{date}}</td>
-						<td>{{score}}</td>
-						<td class="score_field">{{hon}}</td>
-					</tr>
-				{{/review_tab}}
+							<tbody id="product_list">
+							</tbody>
 
-			</table>
+						</table>
+
+					{{/data}}
+
+					<ul class="pager">
+  						<li id="show_more" class="clickable_gen"><a>Load More</a></li>
+					</ul>
+
+					</div>
+				</div>
+
+				{{=<% %>=}}
+					<script id="row-template" type="text/x-handlebars-template">
+					{{#tab}}
+						<tr class="clickable_row" data-url="/review/{{rid}}">
+							<td>{{rid}}</td>
+							<td>{{uid}}</td>
+							<td>{{date}}</td>
+							<td>{{score}}</td>
+							<td class="score_field">{{hon}}</td>
+						</tr>
+					{{/tab}}
+					</script>
+				<%={{ }}=%>
 			
-		    {{> footer }}
+			{{> footer }}
 		</div>
+		<script type="text/javascript" src="/js/product.js"></script>
+		<script type="text/javascript">
+			bigScoreColor();
+
+		</script>
 	</body>
 </html>
+
+
+
+
+				
+

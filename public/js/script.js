@@ -35,3 +35,13 @@ function setSortArrow(id,order){
 	if(order === "DESC" || order ==="desc")
 		$("#"+id).prepend("<span id=\"sort_arrow\" class=\"glyphicon glyphicon-chevron-down\"></span>");
 }
+
+function bigScoreColor(){
+		var bs = $(".big_score");
+		if(bs.html() > 25 && bs.html() <= 75)
+			bs.addClass("alert-warning");
+		if(bs.html()<=25)
+			bs.addClass("alert-danger");
+		if (bs.html()>75)
+			bs.addClass("alert-success");
+	}

@@ -15,6 +15,9 @@ listNearDuplicates(id,offset,limit,orderby,ordering)
 
 nbReviews()
 	[{nb_reviews}]
+
+nbDuplicates(id,type["exact","near"])
+	[{nb_exact_dupes || nb_near_dupes}]
 -----------------------------------
 */
 
@@ -29,13 +32,13 @@ function listReviews(offset,limit,orderby,ordering,type,id){
 		+'DATE_FORMAT(time, "%d-%m-%Y") as date, r.score as score, r.summary as summary, '
 		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score + 1)*50) as hon '
 	+'FROM reviews r '
-	+'WHERE 1 ';
+	+'WHERE r.exact_dup_id is NULL AND r.near_dup_id is NULL ';
 
 	if(arguments.length === 6){
 		if(type === "product")
-			sql+=' AND pid='+id ;
+			sql+=' AND r.product_id LIKE \''+id+'\'' ;
 		if(type === "user")
-			sql+=' AND uid='+id ;
+			sql+=' AND r.user_id LIKE\''+id+'\'' ;
 	}
 
 	if(arguments.length >= 4){
@@ -55,6 +58,7 @@ function getReview(id){
 	return 'SELECT r.review_id as rid, r.user_id as uid, r.product_id as pid, '
 		+'DATE_FORMAT(r.time, "%d-%m-%Y") as date,r.helpfullness as help, r.nb_helpfullness as nbhelp, '
 		+'r.score as score, u.username as uname, p.product_name as pname, r.summary as summary, '
+		+'r.exact_dup_id as exactDupe, r.near_dup_id as nearDupe, '
 		+'ROUND((r.honesty_score+1)*50) as hon,ROUND((u.trust_score+1)*50) as tru, ROUND((p.reliability_score+1)*50) as rel,'
 		+'r.text as text '
 	+'FROM reviews r, products p, users u '
@@ -76,15 +80,17 @@ function listExactDuplicates(id,offset,limit,orderby,ordering){
 		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score+1)*50) as hon '
 	+'FROM  reviews r '
 	+'WHERE exact_dup_id = '+id 
-	+') '
-	+'UNION ( '
+	+') ;';
+	
+	//IF NEEDED
+	/*+'UNION ( '
 	+'SELECT '
 		+'r.review_id as rid, r.user_id as uid, r.product_id as pid, '
 		+'DATE_FORMAT(time, "%d-%m-%Y") as date, r.score as score, r.summary as summary, '
 		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score+1)*50) as hon '
 	+'FROM  reviews r '
 	+'WHERE review_id = '+id
-	+');';
+	+');';*/
 
 }
 
@@ -101,7 +107,8 @@ function listNearDuplicates(id,offset,limit,orderby,ordering){
 		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score+1)*50) as hon '
 	+'FROM  reviews r '
 	+'WHERE near_dup_id = '+id 
-	+') '
+	+') ;';
+	/*IF NEEDED
 	+'UNION ( '
 	+'SELECT '
 		+'r.review_id as rid, r.user_id as uid, r.product_id as pid, '
@@ -109,7 +116,7 @@ function listNearDuplicates(id,offset,limit,orderby,ordering){
 		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score+1)*50) as hon '
 	+'FROM  reviews r '
 	+'WHERE review_id = '+id
-	+');';
+	+');';*/
 
 }
 
@@ -131,6 +138,17 @@ function nbReviews(type,id){
 
 	return 'SELECT count(review_id) as nb_reviews '
 		+'FROM reviews;'; 
+}
+
+function nbDuplicates(id,type){
+	var dupeType = typeof type !== 'undefined' ? type : "exact";
+
+	if(dupeType === "exact"){
+		return 'SELECT count(review_id) as nb_exact_dupes WHERE exact_dup_id = '+id +' ;'
+	}
+	if(dupeType === "near"){
+		return 'SELECT count(review_id) as nb_near_dupes WHERE near_dup_id = '+id+';'
+	}
 }
 
 //exports

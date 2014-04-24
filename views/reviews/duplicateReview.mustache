@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title> Spam Review Detection </title>
+
+		 {{> includes}}
+
+	</head>
+	<body>
+		<div class="container">
+			{{> header}}
+
+			{{#reviewInfo}}
+			<span id="ed_save" style="display:none">{{exactDupe}}</span>
+			<span id="nd_save" style="display:none">{{nearDupe}}</span>
+				<div class="row">
+					<h2 class="page-header col-md-12">
+						 <span class="glyphicon glyphicon-pencil"></span>
+						 Review
+						 #{{ rid }}
+						 
+						 	<small>
+						 	/
+							<span class="glyphicon glyphicon-user"></span>
+							<a href="/user/{{uid}}">&nbsp#{{ uid }}</a>
+						
+							/
+							
+							<span class="glyphicon glyphicon-tags"></span>
+							<a href="/product/{{pid}}">&nbsp#{{ pid }}</a>
+						</small>
+						
+					</h2>
+				</div>
+
+				<div id="dupe_message" class="row alert alert-danger" >
+					{{#exactDupe}}
+					<b>Note: </b>This review is an exact duplicate of <a href="/review/{{exactDupe}}">review #{{exactDupe}}</a>
+					{{/exactDupe}}
+					<br/>
+					{{#nearDupe}}
+					<b>Note: </b>This review is a near duplicate of <a href="/review/{{nearDupe}}">review #{{nearDupe}}</a>
+					{{/nearDupe}}
+				</div>
+
+				<div class="row">
+					<div class="col-md-4">
+						
+						<h3>Review's Honesty</h3>
+						<div class="big_score alert">
+							{{hon}}
+						</div>
+					</div>
+
+					<div class="col-md-8"> 
+						<blockquote >
+
+								<h3><span id="review_score">{{score}}</span> - {{summary}}</h3>
+				  				<p class="text-justify">{{text}}</p>
+				  				<footer>
+				  					{{uname}} about <cite title="Source Title"> {{pname}}</cite>
+				  					<br/>Considered helpfull by {{help}} on {{nbhelp}}
+				  				</footer>
+						</blockquote>	
+					</div>
+				</div>
+			{{/reviewInfo}}
+			
+			<script type="text/javascript">
+				bigScoreColor();
+			</script>
+				
+					
+			{{> footer }}
+		</div>
+	</body>
+</html>
