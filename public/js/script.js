@@ -23,6 +23,7 @@ function visual() {
 					elt.html(elt.html().substr(0,max)+" [...]");
 			});
 
+//ROUND((r.honesty_score + 1)*50) to change scores
 
 
 }

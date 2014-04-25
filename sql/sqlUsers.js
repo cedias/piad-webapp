@@ -13,14 +13,14 @@ nbUsers()
 */
 
 function listUsers(offset,limit,orderby,ordering){
-	return 'SELECT u.user_id as uid, u.username as uname, ROUND((u.trust_score+1)*50) as tru '
+	return 'SELECT u.user_id as uid, u.username as uname, u.trust_score as tru '
  	+'FROM users u '
  	+'ORDER BY '+orderby+' '+ordering
   	+' LIMIT '+offset+' , '+limit+';';
 }
 
 function getUser(id){
-	return 'SELECT u.user_id as uid, u.username as uname, ROUND((u.trust_score+1)*50) as tru '
+	return 'SELECT u.user_id as uid, u.username as uname, u.trust_score as tru '
  	+'FROM users u '
  	+'WHERE u.user_id LIKE \''+id+'\';';
 }

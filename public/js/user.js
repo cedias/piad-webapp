@@ -1,4 +1,4 @@
-$(function productScript(){
+$(function userScript(){
 
 	var orderTab = ["ASC","DESC"];
 	var page = 1;
@@ -6,15 +6,15 @@ $(function productScript(){
 	var order = 0;
 
 	var rowTemplate =  Handlebars.compile($("#row-template").html());
-	var PRODUCTID = $("#pid_save").html().trim();
-	console.log(PRODUCTID);
-	console.log("/product/"+PRODUCTID+"/reviews?sort="+sort+"&order="+orderTab[order]);
+	var USERID = $("#uid_save").html().trim();
+	console.log(USERID);
+	console.log("/user/"+USERID+"/reviews?sort="+sort+"&order="+orderTab[order]);
 
 	//init
-	$.ajax({url: "/product/"+PRODUCTID+"/reviews?sort="+sort+"&order="+orderTab[order]})
+	$.ajax({url: "/user/"+USERID+"/reviews?sort="+sort+"&order="+orderTab[order]})
 	  	.done(function dataloaded(data) 
 	  	{
-			$("#product_list").append(rowTemplate(data));
+			$("#review_list").append(rowTemplate(data));
 			visual();
 			setSortArrow("sort_"+sort,orderTab[order]);
 
@@ -39,17 +39,18 @@ $(function productScript(){
 				order = 0;
 			}
 		
-			$.ajax({url: "/product/"+PRODUCTID+"/reviews?sort="+sort+"&order="+orderTab[order]})
+			$.ajax({url: "/user/"+USERID+"/reviews?sort="+sort+"&order="+orderTab[order]})
 
 		  	.done(function dataloaded(data) {
 				$(".clickable_row").remove();
-				$("#product_list").append(rowTemplate(data));
+				$("#review_list").append(rowTemplate(data));
 				visual();
 				setSortArrow(idSort,orderTab[order]);
 				$("#show_more").show();
 
 				if(data["tab"].length < 10)
 					$("#show_more").hide();
+
 	 		 });
 		}
 	);
@@ -59,10 +60,10 @@ $(function productScript(){
 		function clickMore(){
 			page++;
 			
-			$.ajax({url: "/product/"+PRODUCTID+"/reviews?page="+page+"&sort="+sort+"&order="+orderTab[order]})
+			$.ajax({url: "/user/"+USERID+"/reviews?page="+page+"&sort="+sort+"&order="+orderTab[order]})
 
 		  	.done(function dataloaded(data) {
-				$("#product_list").append(rowTemplate(data));
+				$("#review_list").append(rowTemplate(data));
 
 				if(data["tab"].length < 10)
 					$("#show_more").hide();

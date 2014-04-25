@@ -13,14 +13,14 @@ nbProducts()
 */
 
 function listProducts(offset,limit,orderby,ordering){
-	return 'SELECT p.product_id as pid, p.product_name as pname, ROUND((p.reliability_score+1)*50) as rel '
+	return 'SELECT p.product_id as pid, p.product_name as pname, p.reliability_score as rel '
  	+'FROM products p '
  	+'ORDER BY '+orderby+' '+ordering
   	+' LIMIT '+offset+' , '+limit+';';
 }
 
 function getProduct(id){
-	return 'SELECT p.product_id as pid, p.product_name as pname,p.nb_bursts as burst, ROUND((p.reliability_score+1)*50) as rel '
+	return 'SELECT p.product_id as pid, p.product_name as pname,p.nb_bursts as burst, p.reliability_score as rel '
  	+'FROM products p '
  	+'WHERE p.product_id LIKE\''+id+'\';';
 }

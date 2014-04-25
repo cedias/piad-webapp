@@ -30,7 +30,7 @@ function listReviews(offset,limit,orderby,ordering,type,id){
 	var sql =
 	'SELECT r.review_id as rid, r.user_id as uid, r.product_id as pid, '
 		+'DATE_FORMAT(time, "%d-%m-%Y") as date, r.score as score, r.summary as summary, '
-		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score + 1)*50) as hon '
+		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, r.honesty_score as hon '
 	+'FROM reviews r '
 	+'WHERE r.exact_dup_id is NULL AND r.near_dup_id is NULL ';
 
@@ -59,7 +59,7 @@ function getReview(id){
 		+'DATE_FORMAT(r.time, "%d-%m-%Y") as date,r.helpfullness as help, r.nb_helpfullness as nbhelp, '
 		+'r.score as score, u.username as uname, p.product_name as pname, r.summary as summary, '
 		+'r.exact_dup_id as exactDupe, r.near_dup_id as nearDupe, '
-		+'ROUND((r.honesty_score+1)*50) as hon,ROUND((u.trust_score+1)*50) as tru, ROUND((p.reliability_score+1)*50) as rel,'
+		+'r.honesty_score as hon,u.trust_score as tru, p.reliability_score as rel, '
 		+'r.text as text '
 	+'FROM reviews r, products p, users u '
 	+'WHERE r.review_id =\''+id+'\' '
@@ -77,7 +77,7 @@ function listExactDuplicates(id,offset,limit,orderby,ordering){
 	+'SELECT '
 	    +'r.review_id as rid, r.user_id as uid, r.product_id as pid, '
 		+'DATE_FORMAT(time, "%d-%m-%Y") as date, r.score as score, r.summary as summary, '
-		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score+1)*50) as hon '
+		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, r.honesty_score as hon '
 	+'FROM  reviews r '
 	+'WHERE exact_dup_id = '+id 
 	+') ;';
@@ -104,7 +104,7 @@ function listNearDuplicates(id,offset,limit,orderby,ordering){
 	+'SELECT '
 	    +'r.review_id as rid, r.user_id as uid, r.product_id as pid, '
 		+'DATE_FORMAT(time, "%d-%m-%Y") as date, r.score as score, r.summary as summary, '
-		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, ROUND((r.honesty_score+1)*50) as hon '
+		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, r.honesty_score as hon '
 	+'FROM  reviews r '
 	+'WHERE near_dup_id = '+id 
 	+') ;';

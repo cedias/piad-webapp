@@ -152,7 +152,7 @@ app.get('/product/:id',function(req, res){
 
 /*Ajax reviews loader*/
 app.get('/reviews/:page', function(req, res){ 
-  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 0;
   var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
   var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
 
@@ -193,7 +193,7 @@ app.get('/review/:id/neardupes', function(req, res){
 //----- USERS
 /*Ajax users loader*/
 app.get('/users/:page', function(req, res){ 
-  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 1;
+  var page = typeof req.param("page") !== 'undefined' ?(req.param("page")-1)*50 : 0;
   var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "uid";
   var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
 
@@ -205,7 +205,17 @@ app.get('/users/:page', function(req, res){
    });
 });
 
-app.get('user/:id/reviews',function(req,res){
+app.get('/user/:id/reviews',function(req,res){
+
+  var page = typeof req.query.page !== 'undefined' ?(req.query.page-1)*10 : 0;
+  var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
+  var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
+
+  connection.query(sqlReviews.listReviews(page,10,sort,order,"user",req.param("id")), function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+
+   });
 
 });
 
@@ -227,10 +237,9 @@ app.get('/products/:page', function(req, res){
 
 app.get('/product/:id/reviews',function(req,res){
   var page = typeof req.query.page !== 'undefined' ?(req.query.page-1)*10 : 0;
-  console.log(page);
   var sort = typeof req.query.sort !== 'undefined' ? req.query.sort : "rid";
   var order = typeof req.query.order !== 'undefined' ? req.query.order : "asc";
-  console.log(sqlReviews.listReviews(page,10,sort,order,"product",req.param("id")));
+
   connection.query(sqlReviews.listReviews(page,10,sort,order,"product",req.param("id")), function(err, rows, fields) {
     if (err) throw err;
       res.send({tab:rows});
