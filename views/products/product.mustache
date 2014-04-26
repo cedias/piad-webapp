@@ -26,6 +26,11 @@
 						<div class="big_score alert">
 							{{rel}}
 						</div>
+
+						<div id="reviewpie" style="height:200px;">
+								<center><img id="graph_loader" src="/images/ajax-loader.gif" /></center>
+						</div>
+
 					</div>
 
 					<div class="col-md-8"> 
@@ -52,6 +57,11 @@
 
 					</div>
 				</div>
+				<div class="row">
+					<div id="stackgraph" class="col-md-12">
+							<center><img id="stackedTime_loader" src="/images/ajax-loader.gif" /></center>
+						</div>
+				</div>
 
 				{{=<% %>=}}
 					<script id="row-template" type="text/x-handlebars-template">
@@ -69,6 +79,9 @@
 			
 			{{> footer }}
 		</div>
+		<script type="text/javascript" src="/js/lib/hchart/highcharts.js"></script>
+		<script type="text/javascript" src="/js/charts/scorepie.js"></script>
+		<script type="text/javascript" src="/js/charts/stackedtime.js"></script>
 		<script type="text/javascript" src="/js/product.js"></script>
 		<script type="text/javascript">
 			bigScoreColor();

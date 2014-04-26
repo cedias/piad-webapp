@@ -1,59 +1,65 @@
-<div class="row">
-<h3 class="col-md-12"> Statistics </h3>
-
-<p id="stats" class="col-md-12">
-	The database currently records <b>{{ nb_reviews }} reviews</b> on <b>{{ nb_products }} products</b>, written by <b> {{ nb_users }} users.</b>
-	<br/>
-	You might want to check out the following records, they seem odd.
-</p>
-</div>
 
 <div class="row">
-  <div class="col-md-4">
-  	<h3> Worst 10 Reviews </h3>
-		<table class="table table-hover">
-			<th>Review id</th>
-			<th>Honesty</th>
-
-			{{#tab1}}
-			
-			  <tr class="clickable_row" data-url="/review/{{rid}}" >
-			  	<td>{{rid}}</td>
-			  	<td class="score_field">{{hon}}</td>
-			  </tr>
-			</a>
-			{{/tab1}}
-		</table>
-  </div>
-
-  <div class="col-md-4">
-  		<h3> Worst 10 Users </h3>
-		<table class="table table-hover">
-		<th>User id</th>
-		<th>Trustiness</th>
-		{{#tab2}}
-	  	<tr class="clickable_row" data-url="/user/{{uid}}">
-	  		<td>{{uid}}</td>
-	  		<td class="score_field">{{tru}}</td>
-	  	</tr>
-		{{/tab2}}
-	</table>
-  </div>
-  <div class="col-md-4">
-<h3> Worst 10 Products </h3>
-<table class="table table-hover">
-	<th>Product id</th>
-	<th>Reliability</th>
-
-	{{#tab3}}
-  	<tr class="clickable_row" data-url="/product/{{pid}}">
-  		<td>{{pid}}</td>
-  		<td class="score_field">{{rel}}</td>
-  	</tr>
-	{{/tab3}}
-</table>
-  </div>
+	<div class="alert alert-info  alert-dismissable">
+			The goal of this project is to detect spam reviews among amazon reviews.
+			The algorithm used is based on the following paper: <a href="http://www.cs.uic.edu/~gwang/papers/ICDM-2011-final.pdf">[G. Wang, S. Xie. Review Graph based Online Store Review Spammer Detection]</a>.
+			The dataset was provided by <a href="https://snap.stanford.edu/data/web-Amazon.html">J. McAuley and J. Leskovec</a>.
+	</div>
 </div>
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="page-header"> <span class="glyphicon glyphicon-transfer"></span> Daily Reviews </h3>
+		<div id="daily_review_chart">
+			<img id="graph_loader" src="/images/ajax-loader.gif" />
+		</div>
+	</div>
+</div>
+<h3 class="row page-header"> <span class="glyphicon glyphicon-stats"></span> Statistics </h3>
+<div class="row" id="big_stats">
+	
+	<div class="col-md-4"> 
+		<span class="glyphicon glyphicon-pencil pull-left icon_index"></span>
+		<b>
+			{{ nb_reviews }} 
+			<br/>
+			Reviews
+		</b>
+		<div id="reviewpie" class="index_pie">
+			<img id="reviews_pie_loader" src="/images/ajax-loader.gif" />
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<span class="glyphicon glyphicon-user pull-left icon_index"></span>
+		<b> 
+			{{ nb_users }} 
+		 	<br/>
+		 	Users
+		</b>
+		<div id="userpie" class="index_pie">
+			<img id="users_pie_loader" src="/images/ajax-loader.gif" />
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<span class="glyphicon glyphicon-tags pull-left icon_index"></span>
+		 <b>
+		 	{{ nb_products }} 
+		 	<br/>
+		 	Products
+		 </b>
+		 <div id="productpie" class="index_pie">
+			<img id="products_pie_loader" src="/images/ajax-loader.gif" />
+		</div>
+	</div>
+</div>
+<br/>
+
+<script type="text/javascript" src="/js/lib/hchart/highcharts.js"></script>
+<script type="text/javascript" src="/js/charts/scorepie.js"></script>
+<script type="text/javascript" src="/js/charts/histline.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
 
 
 

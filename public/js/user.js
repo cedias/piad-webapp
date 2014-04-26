@@ -10,7 +10,7 @@ $(function userScript(){
 	console.log(USERID);
 	console.log("/user/"+USERID+"/reviews?sort="+sort+"&order="+orderTab[order]);
 
-	//init
+	//init tab
 	$.ajax({url: "/user/"+USERID+"/reviews?sort="+sort+"&order="+orderTab[order]})
 	  	.done(function dataloaded(data) 
 	  	{
@@ -23,7 +23,32 @@ $(function userScript(){
 		}
 	);
 
+	 //init graph
+	 $.ajax({url: "/chart/user/"+USERID})
+	  	.done(function dataGraphLoaded(data){
+	  		$("#graph_loader").remove();
 
+	  		var tab= data.tab;
+	  		var cpt = [0,0,0];
+	  		var current = 0;
+	  		for(var i = 0;i<tab.length;i++){
+	  			current = convertScoreValue(parseFloat(tab[i].hon));
+	  			console.log(tab[i]);
+	  			if(current < 25)
+	  				cpt[2]++;
+	  			else if(current > 75)
+	  				cpt[0]++;
+	  			else
+	  				cpt[1]++;
+	  		}
+	  		
+	  		scorepie("userpie",cpt[0],cpt[1],cpt[2]);
+
+	  		
+	  	});
+
+
+	 /*Binds*/
 	$(".sortable").click(
 		function clickSortable(){
 			page = 1;

@@ -37,9 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){ 
   var sqlString = sqlReviews.nbReviews()+sqlUsers.nbUsers()+sqlProducts.nbProducts();
-  sqlString += sqlReviews.listReviews(0,10,"hon","ASC");
-  sqlString += sqlUsers.listUsers(0,10,"tru","ASC");
-  sqlString += sqlProducts.listProducts(0,10,"rel","ASC");
  
 	connection.query(sqlString, function(err, rows, fields) {
 	  if (err) throw err;
@@ -49,9 +46,6 @@ app.get('/', function(req, res){
   	   	nb_reviews:rows[0][0]["nb_reviews"],
   	   	nb_users:rows[1][0]["nb_users"],
   	   	nb_products:rows[2][0]["nb_products"],
-  	   	tab1:rows[3],
-  	   	tab2:rows[4],
-  	   	tab3:rows[5],
   	   };
   	   
 
@@ -79,12 +73,15 @@ app.get('/review/:id',function(req, res){
 
   connection.query(sqlReviews.getReview(rid), function(err, rows, fields) {
     if (err) throw err;
-    
 
-    if(rows[0].nearDupe === null && rows[0].exactDupe === null)
-      res.render('reviews/review',{reviewInfo:rows});
-    else
-      res.render('reviews/duplicateReview',{reviewInfo:rows});
+    if(rows.length === 0){
+      res.render('error/error');
+    }else{
+      if(rows[0].nearDupe === null && rows[0].exactDupe === null)
+        res.render('reviews/review',{reviewInfo:rows});
+      else
+        res.render('reviews/duplicateReview',{reviewInfo:rows});
+    }
   }); 
 });
 
@@ -115,7 +112,11 @@ app.get('/user/:id',function(req, res){
         infoUser:rows
        };
 
+    if(rows.length === 0){
+      res.render('error/error');
+    }else{
     res.render('users/user',hashresults);
+    }
     });
 });
 
@@ -137,10 +138,16 @@ app.get('/product/:id',function(req, res){
   var pid = req.param("id");
 
   connection.query(sqlProducts.getProduct(pid), function(err, rows, fields) {
+
+    if(rows.length === 0){
+      res.render('error/error');
+    }else{
     res.render('products/product',{data:rows});
+  }
   });
   
 });
+
 
 
 
@@ -204,7 +211,7 @@ app.get('/users/:page', function(req, res){
 
    });
 });
-
+/*load user reviews*/
 app.get('/user/:id/reviews',function(req,res){
 
   var page = typeof req.query.page !== 'undefined' ?(req.query.page-1)*10 : 0;
@@ -247,6 +254,113 @@ app.get('/product/:id/reviews',function(req,res){
    });
 
 });
+
+//--------- CHARTS
+
+/*user piechart*/
+app.get('/chart/user/:id',function(req,res){
+  connection.query(sqlReviews.listReviews(0,300,"rid","asc","user",req.param("id")), function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+   });
+});
+
+/*product piechart*/
+app.get('/chart/product/:id',function(req,res){
+  connection.query(sqlReviews.listReviews(0,365,"time","asc","product",req.param("id")), function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+   });
+});
+
+
+/*first page time*/
+app.get('/chart/reviews/time',function(req,res){
+
+  var query1 = 'SELECT DATE_FORMAT(r.time, "%Y-%m-%d") as time, COUNT( * ) as nbReviews '
+  +'FROM reviews r '
+  +'WHERE r.honesty_score < -0.25 '
+  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 365;';
+
+  var query2 = 'SELECT DATE_FORMAT(r.time, "%Y-%m-%d") as time, COUNT( * ) as nbReviews '
+  +'FROM reviews r '
+  +'WHERE r.honesty_score >= -0.25 AND  r.honesty_score < 0.25 '
+  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 365;';
+
+  var query3 = 'SELECT DATE_FORMAT(r.time, "%Y-%m-%d") as time, COUNT( * ) as nbReviews '
+  +'FROM reviews r '
+  +'WHERE r.honesty_score >= 0.25 '
+  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 365;';
+  
+  connection.query(query1+query2+query3, function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+   });
+});
+
+/*first page repartition*/
+app.get('/chart/reviews/percentage',function(req,res){
+
+  var query1 = 'SELECT COUNT( * ) as nbReviews '
+  +'FROM reviews r '
+  +'WHERE r.honesty_score < -0.25;'
+
+  var query2 = 'SELECT COUNT( * ) as nbReviews '
+  +'FROM reviews r '
+  +'WHERE r.honesty_score >= -0.25 AND  r.honesty_score < 0.25 ;'
+
+  var query3 = 'SELECT COUNT( * ) as nbReviews '
+  +'FROM reviews r '
+  +'WHERE r.honesty_score >= 0.25 ;'
+  
+  connection.query(query1+query2+query3, function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+   });
+});
+
+/*first page repartition*/
+app.get('/chart/users/percentage',function(req,res){
+
+  var query1 = 'SELECT COUNT( * ) as nbUsers '
+  +'FROM users u '
+  +'WHERE u.trust_score < -0.25;'
+
+  var query2 = 'SELECT COUNT( * ) as nbUsers '
+  +'FROM users u '
+  +'WHERE u.trust_score >= -0.25 AND  u.trust_score < 0.25 ;'
+
+  var query3 = 'SELECT COUNT( * ) as nbUsers '
+  +'FROM users u '
+  +'WHERE u.trust_score >= 0.25 ;'
+  
+  connection.query(query1+query2+query3, function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+   });
+});
+
+/*first page repartition*/
+app.get('/chart/products/percentage',function(req,res){
+
+  var query1 = 'SELECT COUNT( * ) as nbProducts '
+  +'FROM products p '
+  +'WHERE p.reliability_score < -0.25;'
+
+  var query2 = 'SELECT COUNT( * ) as nbProducts '
+  +'FROM products p '
+  +'WHERE p.reliability_score >= -0.25 AND  p.reliability_score < 0.25 ;'
+
+  var query3 = 'SELECT COUNT( * ) as nbProducts '
+  +'FROM products p '
+  +'WHERE p.reliability_score >= 0.25 ;'
+  
+  connection.query(query1+query2+query3, function(err, rows, fields) {
+    if (err) throw err;
+      res.send({tab:rows});
+   });
+});
+
 
 
 

@@ -1,14 +1,19 @@
 function visual() {
 			//on document ready
 
-			$(".score_field").map(function colorizer() {
+			$(".score_field").map(function scoreField() {
 				var elt = $(this);
-				if(elt.html() > 75)
+
+				var value = convertScoreValue(parseFloat(elt.html()));
+				elt.html(value);
+
+				if(value > 75)
 					elt.parent().addClass("success");
-				if(elt.html() <=75 && elt.html()>25)
+				if(value <=75 && value>25)
 					elt.parent().addClass("warning");
-				if(elt.html()<=25)
+				if(value<=25)
 					elt.parent().addClass("danger");
+				elt.removeClass("score_field");
 			});
 
 			$(".clickable_row").click(function goToLastClass () {
@@ -39,10 +44,27 @@ function setSortArrow(id,order){
 
 function bigScoreColor(){
 		var bs = $(".big_score");
-		if(bs.html() > 25 && bs.html() <= 75)
+		var value = convertScoreValue(parseFloat(bs.html()));
+		bs.html(value);
+
+		if(value > 25 && value <= 75)
 			bs.addClass("alert-warning");
-		if(bs.html()<=25)
+		if(value<=25)
 			bs.addClass("alert-danger");
-		if (bs.html()>75)
+		if (value>75)
 			bs.addClass("alert-success");
 	}
+
+function convertScoreValue(score)
+{
+	return Math.round((score+1)*50);
+}
+
+$(function(){
+	$("#search_form").submit(function submitSearch(){
+		var val = $("#search_input").val();
+		var opt = $("#search_options").val();
+		window.document.location = "/"+opt+"/"+val;
+		return false; //no sub
+	});
+});
