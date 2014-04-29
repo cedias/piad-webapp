@@ -9,19 +9,22 @@ var products = require('./controllers/products');
 */
 
 var reviews = require('./controllers/reviews');
-var sql = require('./sql/queries');
 var sqlUsers = require('./sql/sqlUsers');
 var sqlReviews = require('./sql/sqlReviews');
 var sqlProducts = require('./sql/sqlProducts');
+var dbconfig = require('./config/database');
 
+/**
+* Config in /config/database.js
+*/
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'amazon',
-  password : 'amazon',
+  host     : dbconfig.dbhost,
+  user     : dbconfig.user,
+  password : dbconfig.pass,
   multipleStatements: true,
 });
 
-connection.query('USE amazon');
+connection.query('USE '+dbconfig.database);
 
 app.set('port', 3000);
 app.set('views', path.join(__dirname, 'views'));
