@@ -283,17 +283,17 @@ app.get('/chart/reviews/time',function(req,res){
   var query1 = 'SELECT DATE_FORMAT(r.time, "%Y-%m-%d") as time, COUNT( * ) as nbReviews '
   +'FROM reviews r '
   +'WHERE r.honesty_score < -0.25 '
-  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 365;';
+  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 100;';
 
   var query2 = 'SELECT DATE_FORMAT(r.time, "%Y-%m-%d") as time, COUNT( * ) as nbReviews '
   +'FROM reviews r '
   +'WHERE r.honesty_score >= -0.25 AND  r.honesty_score < 0.25 '
-  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 365;';
+  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 100;';
 
   var query3 = 'SELECT DATE_FORMAT(r.time, "%Y-%m-%d") as time, COUNT( * ) as nbReviews '
   +'FROM reviews r '
   +'WHERE r.honesty_score >= 0.25 '
-  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 365;';
+  +'GROUP BY r.time ORDER BY  r.time DESC LIMIT 0 , 100;';
   
   connection.query(query1+query2+query3, function(err, rows, fields) {
     if (err) throw err;

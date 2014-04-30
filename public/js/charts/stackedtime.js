@@ -7,14 +7,7 @@ function stackedTime(id_container,data) {
             title: {
                 text: 'Reviews Honesty over time'
             },
-            legend: {
-                layout: 'vertical',
-                align: 'left',
-                verticalAlign: 'top',
-                floating: true,
-                borderWidth: 1,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-            },
+            
             xAxis: {
                 type: 'datetime',
 

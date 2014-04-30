@@ -13,6 +13,7 @@ $(function indexScript(){
 
 	  			for(var i = tabDishonest.length-1;i>=0;i--)
 	  			{
+	  				console.log(i);
 	  				var a = tabDishonest[i]["time"].split("-");
 	  				var b = tabUndecided[i]["time"].split("-");
 	  				var c = tabHonest[i]["time"].split("-");

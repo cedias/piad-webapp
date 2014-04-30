@@ -179,7 +179,7 @@ function stackGraph(data){
 	    type:'spline',
 	    yAxis:1,
 	    data: avgScore,
-	    color:'#ff0000',
+	    color:'#0000ff',
 	     tooltip: {
                 valueSuffix: ' Stars'
             },
