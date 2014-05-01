@@ -13,13 +13,12 @@ $(function indexScript(){
 
 	  			for(var i = tabDishonest.length-1;i>=0;i--)
 	  			{
-	  				console.log(i);
 	  				var a = tabDishonest[i]["time"].split("-");
 	  				var b = tabUndecided[i]["time"].split("-");
 	  				var c = tabHonest[i]["time"].split("-");
-	  				dataChartDis.push([Date.UTC(a[0],a[1],a[2]),tabDishonest[i]["nbReviews"]]);
-	  				dataChartUnd.push([Date.UTC(b[0],b[1],b[2]),tabUndecided[i]["nbReviews"]]);
-	  				dataChartHon.push([Date.UTC(c[0],c[1],c[2]),tabHonest[i]["nbReviews"]]);
+	  				dataChartDis.push([Date.UTC(a[0],a[1]-1,a[2]),tabDishonest[i]["nbReviews"]]);
+	  				dataChartUnd.push([Date.UTC(b[0],b[1]-1,b[2]),tabUndecided[i]["nbReviews"]]);
+	  				dataChartHon.push([Date.UTC(c[0],c[1]-1,c[2]),tabHonest[i]["nbReviews"]]);
 	  			}
 
 	  			$("#graph_loader").remove();

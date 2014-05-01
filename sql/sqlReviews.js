@@ -32,7 +32,7 @@ function listReviews(offset,limit,orderby,ordering,type,id){
 		+'DATE_FORMAT(time, "%d-%m-%Y") as date, r.score as score, r.summary as summary, '
 		+'r.helpfullness as help, r.nb_helpfullness as nbhelp, r.honesty_score as hon '
 	+'FROM reviews r '
-	+'WHERE r.exact_dup_id is NULL AND r.near_dup_id is NULL ';
+	+'WHERE 1';
 
 	if(arguments.length === 6){
 		if(type === "product")
