@@ -42,7 +42,7 @@ $(function userScript(){
 	  				cpt[1]++;
 	  		}
 	  		
-	  		scorepie("userpie",cpt[0],cpt[1],cpt[2],"trustable","unknown","untrustable");
+	  		scorepie("userpie",cpt[0],cpt[1],cpt[2],"Honest","unknown","Dishonest");
 
 	  		
 	  	});

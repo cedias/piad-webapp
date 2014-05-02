@@ -68,6 +68,25 @@
 			
 			<script type="text/javascript">
 				bigScoreColor();
+
+		function scoreToStars(){
+			var star =" <span class=\"glyphicon glyphicon-star\"></span>";
+			var starEmpty =" <span class=\"glyphicon glyphicon-star-empty\"></span>";
+			var score = $("#review_score").html();
+
+			$("#review_score").html("");
+
+			for(var i = 0;i<score;i++)
+				$("#review_score").append(star);
+
+			for(var i = 0;i<5-score;i++)
+				$("#review_score").append(starEmpty);
+		}
+			$(document).ready(
+				function () {
+					scoreToStars();
+				});
+
 			</script>
 				
 					
